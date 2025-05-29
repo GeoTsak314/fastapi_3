@@ -13,11 +13,6 @@ nav:
   - Home: index.md
   - Usage:
       - Export API: usage/export.md
-      - FastAPI Docs:
-        - Reference:
-          - HTTPConnection: en/docs/reference/httpconnection.md
-        - Tutorial:
-          - First Steps: en/docs/tutorial/first-steps.md
 plugins:
   - search
   - autorefs
