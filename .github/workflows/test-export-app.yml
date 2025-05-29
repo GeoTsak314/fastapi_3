@@ -4,11 +4,11 @@ on:
   push:
     paths:
       - 'export_app/**'
-      - '.github/workflows/test-export-example.yml'
+      - '.github/workflows/test-export-app.yml'
   pull_request:
     paths:
       - 'export_app/**'
-      - '.github/workflows/test-export-example.yml'
+      - '.github/workflows/test-export-app.yml'
 
 jobs:
   test:
