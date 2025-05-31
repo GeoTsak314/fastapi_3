@@ -1,19 +1,5 @@
 # Export Endpoint Usage
 
-## `/export` (POST method with file upload)
-
-You can now upload a `.json`, `.csv`, or `.txt` file and select the export format in Swagger UI.
-
-### Example
-```http
-POST /export
-Form fields:
-- file: upload your data file (JSON, CSV, or TXT)
-- format: select the output format (e.g., csv, excel, pdf)
-```
-
----
-
 ## `/export?format=...`
 
 The `/export` endpoint supports exporting to various formats using a query parameter `format`.

@@ -14,6 +14,10 @@ This FastAPI application supports exporting data to:
 
 ### 📁 File Formats
 
+This app supports uploading your own `.txt`, `.csv`, or `.json` file (via Swagger UI),
+automatically converting it to structured data for export.
+
+
 - **JSON** → `?format=json`  
 - **CSV** → `?format=csv`  
 - **Excel** → `?format=excel`  
@@ -56,6 +60,9 @@ uvicorn main:app --reload
 ```
 
 Visit [http://127.0.0.1:8000](http://127.0.0.1:8000) to access the Swagger UI and test the `/export` endpoint.
+
+You can upload your own database file as input (in `.json`, `.csv`, or `.txt` format)
+and export it to any supported format. The conversion happens automatically.
 
 ---
 

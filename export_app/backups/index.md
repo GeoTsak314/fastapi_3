@@ -3,9 +3,6 @@
 
 Welcome to the documentation for the **FastAPI Export App**!
 
-🆕 Now supporting file uploads for structured data conversion!
-You can upload `.json`, `.csv`, or `.txt` files directly via Swagger UI and convert them to any supported export format.
-
 This application demonstrates how to export data to a variety of formats & backends using FastAPI, including:
 
 - File formats: JSON, CSV, Excel, PDF, Parquet, Avro, Feather, ORC
