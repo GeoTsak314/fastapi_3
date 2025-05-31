@@ -1,3 +1,4 @@
+# by Joanna Karitsioti & George Tsakalos (AUEB DMST - Spinelis SEIP)
 
 import os
 import pytest

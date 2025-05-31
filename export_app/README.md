@@ -1,5 +1,5 @@
 # Export Data Example with FastAPI 
-# by Joanna Karytsioti & George Tsakalos
+# by Joanna Karytsioti & George Tsakalos (AUEB DMST - Spinelis SEIP)
 
 This FastAPI app demonstrates how to export structured data to a wide variety of formats and systems.
 

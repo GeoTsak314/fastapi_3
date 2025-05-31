@@ -1,4 +1,4 @@
-# FastAPI export implementation by Joanna & George 
+# FastAPI export implementation by Joanna Karitsioti & George Tsakalos
 
 from fastapi import FastAPI, Query
 from fastapi.responses import JSONResponse, StreamingResponse, RedirectResponse

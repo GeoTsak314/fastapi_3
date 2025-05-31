@@ -1,4 +1,5 @@
-# FastAPI Export app by AUEB DMST (Karitsioti & Tsakalos)
+# FastAPI Export app 
+# by Joanna Karitsioti & George Tsakalos (AUEB DMST - Spinelis SEIP)
 
 Welcome to the documentation for the **FastAPI Export App**!
 
