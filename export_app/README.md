@@ -119,14 +119,21 @@ See [`requirements_all_exports.txt`](./requirements_all_exports.txt) for full de
 ### Export app changed files vs. FastAPI
 
 ```
-├── app                      # "app" is a Root directory      
-│   ├── main.py              # "main" module
-│   ├── models.py            # "models" of the application
-│   ├── dependencies.py      # "dependencies" module, e.g. import app.dependencies
-│   └── routers              # "routers" is a "app subpackage"
-│       ├── fat_cats.py      # "fat_cats" submodule, e.g. import app.routers.fat_cats
-│       ├── slim_dogs.py     # "slim_dogs" submodule, e.g. import app.routers.slim_dogs
-│       └── wild_boars.py    # "wild_boars" submodule, e.g. import app.routers.wild_boars
+├── /fastapi                              # Official FastAPI root directory
+│   ├── /export_app                       # Our "export app" files package
+│   │   ├── main.py                       # export app main module
+│   │   ├── README.md                     # our export app readme doc
+│   │   ├── requirements-export-app.md    # our export app modules run requirements
+│   │   └── test_export_app.py            # Export app pytest
+│   ├── /docs                             # FastAPI docs
+│   │   ├── index.md                      # Export app index doc
+│   │   └── /usage
+│   │       └── export.md                 # Export app markdown (for endpoint usage)
+│   └── /.github
+│       └── /workflows
+│           └── test-export-app.yml       # Export app test workflow
+├── mkdocs-export.yml                     # Export app makedocs YAML
+└── requirements*.py                      # FastAPI official run requirements
 ```
 
 ---
