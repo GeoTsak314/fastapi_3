@@ -1,90 +1,118 @@
-# Export Data Example with FastAPI 
-# by Joanna Karytsioti & George Tsakalos (AUEB DMST - Spinelis SEIP)
+# 🚀 FastAPI Export App
 
-This FastAPI app demonstrates how to export structured data to a wide variety of formats and systems.
+Export structured data to multiple formats and systems with FastAPI.  
+By Joanna Karytsioti & George Tsakalos (AUEB DMST – Spinelis SEIP)
 
 ---
 
-## ✅ Supported Export Formats
+## 📦 Features
+
+This FastAPI application supports exporting data to:
 
 ### 📁 File Formats
-- JSON (`?format=json`)
-- CSV (`?format=csv`)
-- Excel (`?format=excel`)
-- PDF (`?format=pdf`)
-- Parquet (`?format=parquet`)
-- Avro (`?format=avro`)
-- Feather (`?format=feather`)
-- ORC (`?format=orc`)
+
+- **JSON** → `?format=json`  
+- **CSV** → `?format=csv`  
+- **Excel** → `?format=excel`  
+- **PDF** → `?format=pdf`  
+- **Parquet** → `?format=parquet`  
+- **Avro** → `?format=avro`  
+- **Feather** → `?format=feather`  
+- **ORC** → `?format=orc`  
 
 ### 🗄 Databases & Storage
-- MySQL (`?format=mysql`)
-- SQLite (`?format=sqlite`)
-- AWS S3 (`?format=s3`)
+
+- **MySQL** → `?format=mysql`  
+- **SQLite** → `?format=sqlite`  
+- **AWS S3** → `?format=s3`  
 
 ### 🔄 Streaming Systems
-- Kafka (`?format=kafka`)
-- RabbitMQ (`?format=rabbitmq`)
-- Apache Pulsar (`?format=pulsar`)
+
+- **Kafka** → `?format=kafka`  
+- **RabbitMQ** → `?format=rabbitmq`  
+- **Apache Pulsar** → `?format=pulsar`  
 
 ---
 
-## 🚀 How to Run
+## 🛠 Installation
 
-1. **Install dependencies**:
+Install the required dependencies:
 
 ```bash
 pip install -r requirements_all_exports.txt
 ```
 
-2. **Start the FastAPI server**:
+---
+
+## ▶️ Usage
+
+Start the development server:
 
 ```bash
 uvicorn main:app --reload
 ```
 
-3. **Visit**: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)  
-   This will redirect you to Swagger docs (`/docs`) where you can test the `/export` endpoint.
+Visit [http://127.0.0.1:8000](http://127.0.0.1:8000) to access the Swagger UI and test the `/export` endpoint.
 
 ---
 
 ## 🔐 Environment Variables
 
-### AWS S3:
-- `AWS_ACCESS_KEY_ID`
-- `AWS_SECRET_ACCESS_KEY`
-- `AWS_S3_BUCKET`
-- `AWS_S3_OBJECT_KEY`
+Set the following environment variables depending on your export target:
 
-### MySQL:
-- `MYSQL_HOST`
-- `MYSQL_USER`
-- `MYSQL_PASSWORD`
-- `MYSQL_DATABASE`
+### AWS S3
 
-### Kafka:
-- `KAFKA_BOOTSTRAP_SERVERS` (default: `localhost:9092`)
-- `KAFKA_TOPIC` (default: `exported_data`)
+```env
+AWS_ACCESS_KEY_ID=...
+AWS_SECRET_ACCESS_KEY=...
+AWS_S3_BUCKET=...
+AWS_S3_OBJECT_KEY=...
+```
 
-### RabbitMQ:
-- `RABBITMQ_HOST` (default: `localhost`)
-- `RABBITMQ_QUEUE` (default: `export_queue`)
+### MySQL
 
-### Pulsar:
-- `PULSAR_SERVICE_URL` (default: `pulsar://localhost:6650`)
-- `PULSAR_TOPIC` (default: `exported_data`)
+```env
+MYSQL_HOST=...
+MYSQL_USER=...
+MYSQL_PASSWORD=...
+MYSQL_DATABASE=...
+```
+
+### Kafka
+
+```env
+KAFKA_BOOTSTRAP_SERVERS=localhost:9092
+KAFKA_TOPIC=exported_data
+```
+
+### RabbitMQ
+
+```env
+RABBITMQ_HOST=localhost
+RABBITMQ_QUEUE=export_queue
+```
+
+### Pulsar
+
+```env
+PULSAR_SERVICE_URL=pulsar://localhost:6650
+PULSAR_TOPIC=exported_data
+```
 
 ---
 
-## 📦 Dependencies (see `requirements_all_exports.txt`)
+## 🧰 Tech Stack
 
-- `fastapi`, `uvicorn`
-- `pandas`, `xlsxwriter`, `reportlab`, `pyarrow`, `fastavro`
-- `mysql-connector-python`, `boto3`, `kafka-python`, `pika`, `pulsar-client`
+- **FastAPI**, **Uvicorn**
+- **Pandas**, **XlsxWriter**, **ReportLab**
+- **PyArrow**, **FastAvro**
+- **MySQL Connector**, **Boto3**, **Kafka-Python**
+- **Pika**, **Pulsar-Client**
+
+See [`requirements_all_exports.txt`](./requirements_all_exports.txt) for full details.
 
 ---
 
 ## 📄 License
 
-MIT – for educational, demonstration, and contribution purposes.
-
+MIT License – for educational and contribution purposes.
