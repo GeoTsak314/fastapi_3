@@ -1,7 +1,11 @@
-# 🚀 FastAPI Export App
+# FastAPI Export App
 
 Export structured data to multiple formats and systems with FastAPI.  
 By Joanna Karytsioti & George Tsakalos (AUEB DMST – Spinelis SEIP)
+
+[![PyPI version](https://badge.fury.io/py/fastapi-code-generator.svg)](https://pypi.python.org/pypi/fastapi-code-generator)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/fastapi-code-generator)](https://pypi.python.org/pypi/fastapi-code-generator)
+![license](https://img.shields.io/github/license/koxudaxi/fastapi-code-generator.svg)
 
 ---
 
