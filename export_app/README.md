@@ -46,7 +46,7 @@ automatically converting it to structured data for export.
 Install the required dependencies:
 
 ```bash
-pip install -r requirements_all_exports.txt
+pip install -r requirements-export-app.txt
 ```
 
 ---
