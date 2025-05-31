@@ -112,7 +112,7 @@ PULSAR_TOPIC=exported_data
 - **MySQL Connector**, **Boto3**, **Kafka-Python**
 - **Pika**, **Pulsar-Client**
 
-See [`requirements_all_exports.txt`](./requirements_all_exports.txt) for full details.
+See [`requirements-export-app.txt`](./export_app/requirements-export-app.txt) for full details.
 
 ---
 
