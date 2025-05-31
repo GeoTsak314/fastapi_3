@@ -3,7 +3,6 @@
 Export structured data to multiple formats and systems with FastAPI.  
 By Joanna Karytsioti & George Tsakalos (AUEB DMST – Spinelis SEIP)
 
-[![PyPI version](https://badge.fury.io/py/fastapi-code-generator.svg)](https://pypi.python.org/pypi/fastapi-code-generator)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/fastapi-code-generator)](https://pypi.python.org/pypi/fastapi-code-generator)
 ![license](https://img.shields.io/github/license/koxudaxi/fastapi-code-generator.svg)
 
@@ -114,6 +113,21 @@ PULSAR_TOPIC=exported_data
 - **Pika**, **Pulsar-Client**
 
 See [`requirements_all_exports.txt`](./requirements_all_exports.txt) for full details.
+
+---
+
+### Export app changed files vs. FastAPI
+
+```
+├── app                      # "app" is a Root directory      
+│   ├── main.py              # "main" module
+│   ├── models.py            # "models" of the application
+│   ├── dependencies.py      # "dependencies" module, e.g. import app.dependencies
+│   └── routers              # "routers" is a "app subpackage"
+│       ├── fat_cats.py      # "fat_cats" submodule, e.g. import app.routers.fat_cats
+│       ├── slim_dogs.py     # "slim_dogs" submodule, e.g. import app.routers.slim_dogs
+│       └── wild_boars.py    # "wild_boars" submodule, e.g. import app.routers.wild_boars
+```
 
 ---
 
