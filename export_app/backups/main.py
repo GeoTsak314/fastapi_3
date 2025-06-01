@@ -1,6 +1,7 @@
+
 # FastAPI export implementation by Joanna Karitsioti & George Tsakalos
 
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse, StreamingResponse, RedirectResponse
 import pandas as pd
 import io
@@ -12,22 +13,13 @@ from reportlab.pdfgen import canvas
 import boto3
 from botocore.exceptions import BotoCoreError, NoCredentialsError
 import mysql.connector
-
-
-
+from export_app.data_converter import convert_to_json
+import pulsar
+import pika
+from kafka import KafkaProducer
 
 
 app = FastAPI(title="Data Export Example")
-
-
-
-# Dummy data source (for initial testing purposes only)
-data = [
-    {"id": 1, "name": "Sebastian", "age": 27},
-    {"id": 2, "name": "Joanna", "age": 22},
-    {"id": 3, "name": "George", "age": 37}
-]
-
 
 
 
@@ -128,14 +120,20 @@ def export_to_mysql(df: pd.DataFrame):
     return JSONResponse(content={"message": "Data successfully exported to MySQL."})
 
 
+@app.post("/export")
+async def export_data(
+    file: UploadFile = File(...),
+    format: str = Query("json", enum=[
+        "json", "csv", "excel", "pdf", "parquet",
+        "mysql", "avro", "feather", "orc", "sqlite", "s3", "kafka", "rabbitmq", "pulsar"
+    ])
+):
+    try:
+        records = await convert_to_json(file)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-
-@app.get("/export")
-async def export_data(format: str = Query("json", enum=[
-    "json", "csv", "excel", "pdf", "parquet",
-    "mysql", "avro", "feather", "orc", "sqlite", "s3", "kafka", "rabbitmq", "pulsar"
-])):
-    df = pd.DataFrame(data)
+    df = pd.DataFrame(records)
 
     if format == "json":
         return JSONResponse(content=df.to_dict(orient="records"))
@@ -169,16 +167,12 @@ async def export_data(format: str = Query("json", enum=[
     return JSONResponse(content={"error": "Invalid format"}, status_code=400)
 
 
-
 @app.get("/", include_in_schema=False)
 async def root():
     return RedirectResponse(url="/docs")
 
 
-
-
 # Special formats export
-# AWS S3 export
 def export_to_s3(df: pd.DataFrame):
     bucket_name = os.getenv("AWS_S3_BUCKET", "your-bucket-name")
     object_key = os.getenv("AWS_S3_OBJECT_KEY", "exported_data.json")
@@ -193,9 +187,6 @@ def export_to_s3(df: pd.DataFrame):
         return JSONResponse(content={"error": f"S3 upload failed: {str(e)}"}, status_code=500)
 
 
-
-# Kafka export
-from kafka import KafkaProducer
 def export_to_kafka(df: pd.DataFrame):
     try:
         producer = KafkaProducer(bootstrap_servers=os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092"))
@@ -208,9 +199,6 @@ def export_to_kafka(df: pd.DataFrame):
         return JSONResponse(content={"error": f"Kafka export failed: {str(e)}"}, status_code=500)
 
 
-
-# RabbitMQ export
-import pika
 def export_to_rabbitmq(df: pd.DataFrame):
     try:
         connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.getenv("RABBITMQ_HOST", "localhost")))
@@ -226,9 +214,6 @@ def export_to_rabbitmq(df: pd.DataFrame):
         return JSONResponse(content={"error": f"RabbitMQ export failed: {str(e)}"}, status_code=500)
 
 
-
-# Apache Pulsar export
-import pulsar
 def export_to_pulsar(df: pd.DataFrame):
     try:
         service_url = os.getenv("PULSAR_SERVICE_URL", "pulsar://localhost:6650")

@@ -14,6 +14,12 @@ This FastAPI application supports exporting data to:
 
 ### 📁 File Formats
 
+This app supports uploading your own `.txt`, `.csv`, or `.json` file (via Swagger UI),  
+automatically converting it to structured data for export.
+
+You can also fetch data directly from an **online SQLite or MySQL database** by calling the `/import-online-db` endpoint.
+
+
 This app supports uploading your own `.txt`, `.csv`, or `.json` file (via Swagger UI),
 automatically converting it to structured data for export.
 
@@ -63,6 +69,8 @@ Visit [http://127.0.0.1:8000](http://127.0.0.1:8000) to access the Swagger UI an
 
 You can upload your own database file as input (in `.json`, `.csv`, or `.txt` format)
 and export it to any supported format. The conversion happens automatically.
+
+You can also use the `/import-online-db` GET endpoint to fetch data from remote SQLite or MySQL databases.
 
 ---
 

@@ -1,6 +1,7 @@
 
-# FastAPI export implementation by Joanna Karitsioti & George Tsakalos
+# FastAPI export app by Joanna Karitsioti & George Tsakalos
 
+from typing import Literal
 from fastapi import FastAPI, Query, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse, StreamingResponse, RedirectResponse
 import pandas as pd
@@ -13,13 +14,14 @@ from reportlab.pdfgen import canvas
 import boto3
 from botocore.exceptions import BotoCoreError, NoCredentialsError
 import mysql.connector
-from export_app.data_converter import convert_to_json
+from export_app.dbase_converter import convert_to_json, fetch_from_sqlite, fetch_from_mysql
 import pulsar
 import pika
 from kafka import KafkaProducer
 
 
-app = FastAPI(title="Data Export Example")
+
+app = FastAPI(title="Data Import & Export App")
 
 
 
@@ -120,7 +122,7 @@ def export_to_mysql(df: pd.DataFrame):
     return JSONResponse(content={"message": "Data successfully exported to MySQL."})
 
 
-@app.post("/export")
+@app.post("/export", summary="Export data to a specified format", description="Upload a .txt, .csv or .json file and choose the desired output format (e.g. Excel, PDF, MySQL, S3, Kafka, etc). The file will be parsed and converted automatically.")
 async def export_data(
     file: UploadFile = File(...),
     format: str = Query("json", enum=[
@@ -165,6 +167,62 @@ async def export_data(
         return export_to_pulsar(df)
 
     return JSONResponse(content={"error": "Invalid format"}, status_code=400)
+
+
+
+@app.get("/import-online-db", summary="Import data from a remote database", description="Connect to an online SQLite or MySQL database and fetch the contents of a specific table. Provide connection details via query parameters.")
+async def import_from_database(
+    db_type: Literal["sqlite", "mysql"] = Query(..., description="Type of database"),
+    host: str = Query(None, description="Database host (for MySQL)"),
+    user: str = Query(None, description="Database username (for MySQL)"),
+    password: str = Query(None, description="Database password (for MySQL)"),
+    database: str = Query(None, description="Database name (for MySQL)"),
+    table: str = Query(..., description="Table name to fetch from"),
+    url: str = Query(None, description="SQLite database URL (path to .db file)")
+):
+    try:
+        if db_type == "sqlite":
+            if not url:
+                raise ValueError("SQLite 'url' parameter is required")
+            data = fetch_from_sqlite(url=url, table=table)
+        elif db_type == "mysql":
+            if not all([host, user, password, database]):
+                raise ValueError("MySQL requires host, user, password, and database")
+            data = fetch_from_mysql(host=host, user=user, password=password, database=database, table=table)
+        else:
+            raise ValueError("Unsupported database type")
+
+        return JSONResponse(content={"data": data})
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+
+@app.get("/import-online-db", summary="Import data from a remote database", description="Connect to an online SQLite or MySQL database and fetch the contents of a specific table. Provide connection details via query parameters.")
+async def import_from_database(
+    db_type: Literal["sqlite", "mysql"] = Query(..., description="Type of database"),
+    host: str = Query(None, description="Database host (for MySQL)"),
+    user: str = Query(None, description="Database username (for MySQL)"),
+    password: str = Query(None, description="Database password (for MySQL)"),
+    database: str = Query(None, description="Database name (for MySQL)"),
+    table: str = Query(..., description="Table name to fetch from"),
+    url: str = Query(None, description="SQLite database URL (path to .db file)")
+):
+    try:
+        if db_type == "sqlite":
+            if not url:
+                raise ValueError("SQLite 'url' parameter is required")
+            data = fetch_from_sqlite(url=url, table=table)
+        elif db_type == "mysql":
+            if not all([host, user, password, database]):
+                raise ValueError("MySQL requires host, user, password, and database")
+            data = fetch_from_mysql(host=host, user=user, password=password, database=database, table=table)
+        else:
+            raise ValueError("Unsupported database type")
+
+        return JSONResponse(content={"data": data})
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @app.get("/", include_in_schema=False)
