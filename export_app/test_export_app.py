@@ -9,8 +9,8 @@ from main import app
 
 client = TestClient(app)
 
-DATA_PATH = "export_app/dbase_examples"
-API_PREFIX = ""  # adjust to "/export_app" if your app is mounted at that path
+DATA_PATH = "dbase_examples"
+API_PREFIX = "/export_app"
 
 @pytest.mark.parametrize("format,expected_type,expected_header,filename,mimetype", [
     ("json", "application/json", None, "data_json.json", "application/json"),
