@@ -29,6 +29,9 @@ jobs:
         pip install -r requirements-export-app.txt
         pip install pytest
 
+    - name: Set PYTHONPATH
+      run: echo "PYTHONPATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+
     - name: Run tests
       run: |
         cd export_app
