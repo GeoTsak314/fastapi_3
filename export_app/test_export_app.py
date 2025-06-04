@@ -10,7 +10,7 @@ from main import app
 client = TestClient(app)
 
 DATA_PATH = "dbase_examples"
-API_PREFIX = "/export_app"
+API_PREFIX = ""
 
 @pytest.mark.parametrize("format,expected_type,expected_header,filename,mimetype", [
     ("json", "application/json", None, "data_json.json", "application/json"),
