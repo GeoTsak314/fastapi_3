@@ -10,6 +10,7 @@ from main import app
 client = TestClient(app)
 
 DATA_PATH = "export_app/dbase_examples"
+API_PREFIX = ""  # adjust to "/export_app" if your app is mounted at that path
 
 @pytest.mark.parametrize("format,expected_type,expected_header,filename,mimetype", [
     ("json", "application/json", None, "data_json.json", "application/json"),
@@ -20,9 +21,10 @@ DATA_PATH = "export_app/dbase_examples"
 ])
 def test_export_formats(format, expected_type, expected_header, filename, mimetype):
     filepath = os.path.join(DATA_PATH, filename)
+    assert os.path.exists(filepath), f"Missing file: {filepath}"
     with open(filepath, "rb") as f:
         response = client.post(
-            f"/export?format={format}",
+            f"{API_PREFIX}/export?format={format}",
             files={"file": (filename, f.read(), mimetype)}
         )
     assert response.status_code == 200
@@ -33,9 +35,10 @@ def test_export_formats(format, expected_type, expected_header, filename, mimety
 
 def test_sqlite_export():
     filepath = os.path.join(DATA_PATH, "data_json.json")
+    assert os.path.exists(filepath), f"Missing file: {filepath}"
     with open(filepath, "rb") as f:
         response = client.post(
-            "/export?format=sqlite",
+            f"{API_PREFIX}/export?format=sqlite",
             files={"file": ("data_json.json", f.read(), "application/json")}
         )
     assert response.status_code == 200
@@ -50,9 +53,10 @@ def test_sqlite_export():
 )
 def test_mysql_export():
     filepath = os.path.join(DATA_PATH, "data_json.json")
+    assert os.path.exists(filepath), f"Missing file: {filepath}"
     with open(filepath, "rb") as f:
         response = client.post(
-            "/export?format=mysql",
+            f"{API_PREFIX}/export?format=mysql",
             files={"file": ("data_json.json", f.read(), "application/json")}
         )
     assert response.status_code == 200
@@ -60,5 +64,5 @@ def test_mysql_export():
 
 
 def test_root_redirects_to_docs():
-    response = client.get("/")
+    response = client.get(f"{API_PREFIX}/")
     assert response.status_code in (307, 200)
