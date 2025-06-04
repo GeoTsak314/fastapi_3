@@ -19,5 +19,6 @@ This application demonstrates how to handle both **data export** and **data impo
 
 - [**/export** – Export uploaded data](usage/export.md)
 - [**/import-online-db** – Import from an online SQLite/MySQL database](usage/export.md)
+- [**App structure overview**](usage/app_structure.md)
 
 All endpoints are accessible via the interactive **Swagger UI** at `/docs`.
