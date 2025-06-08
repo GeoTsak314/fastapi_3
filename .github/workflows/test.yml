@@ -27,7 +27,7 @@ jobs:
           pip install -r export_app/requirements-export-app.txt
       - name: Run tests with coverage
         run: |
-          coverage run -m pytest export_app/test_export_app.py
+          coverage run --source=export_app -m pytest export_app/test_export_app.py
           coverage report
           coverage xml
       - name: Upload to Codecov
