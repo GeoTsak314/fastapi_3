@@ -1,4 +1,4 @@
-name: Tests
+name: Run tests and upload coverage
 
 on:
   push:
@@ -6,23 +6,14 @@ on:
       - master
   pull_request:
 
-env:
-  UV_SYSTEM_PYTHON: 1
-
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        python-version: ["3.8", "3.9", "3.10"]
-    env:
-      COVERAGE_FILE: coverage/.coverage.${{ matrix.os }}.${{ matrix.python-version }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.10'
       - name: Setup uv
         uses: astral-sh/setup-uv@v6
         with:
@@ -34,61 +25,14 @@ jobs:
       - name: Install dependencies
         run: |
           uv pip install -r requirements-tests.txt
-          uv pip install -r export_app/requirements-export-app.txt
-          uv pip install .
       - name: Run tests with coverage
         run: |
-          mkdir -p coverage
           coverage run -m pytest export_app/test_export_app.py
-      - name: Upload coverage artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-${{ matrix.os }}-${{ matrix.python-version }}
-          path: ${{ env.COVERAGE_FILE }}
-
-  coverage-combine:
-    needs: [test]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.8'
-      - name: Setup uv
-        uses: astral-sh/setup-uv@v6
-        with:
-          version: "0.4.15"
-          enable-cache: true
-          cache-dependency-glob: |
-            requirements**.txt
-            pyproject.toml
-      - name: Install Dependencies
-        run: |
-          uv pip install -r requirements-tests.txt
-          uv pip install -r export_app/requirements-export-app.txt
-      - name: Get coverage files
-        uses: actions/download-artifact@v4
-        with:
-          pattern: coverage-*
-          path: coverage
-          merge-multiple: true
-      - run: coverage combine coverage
-      - run: coverage report
-      - run: coverage html --title "Coverage for ${{ github.sha }}"
-      - run: coverage xml -o coverage.xml
+          coverage report
+          coverage xml
       - name: Upload to Codecov
         uses: codecov/codecov-action@v3
         with:
           file: coverage.xml
           flags: unittests
           name: codecov-upload
-      - name: Store coverage HTML
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-html
-          path: htmlcov
-          include-hidden-files: true
