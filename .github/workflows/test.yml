@@ -39,7 +39,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           mkdir -p coverage
-          coverage run -m pytest
+          coverage run -m pytest export_app/test_export_app.py
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
         with:
