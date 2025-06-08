@@ -9,7 +9,7 @@ from main import app
 
 client = TestClient(app)
 
-DATA_PATH = "dbase_examples"
+DATA_PATH = "export_app/dbase_examples"
 API_PREFIX = ""
 
 @pytest.mark.parametrize("format,expected_type,expected_header,filename,mimetype", [
