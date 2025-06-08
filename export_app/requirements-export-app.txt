@@ -11,3 +11,6 @@ kafka-python
 pika
 pulsar-client
 httpx
+coverage
+pytest
+pytest-cov
